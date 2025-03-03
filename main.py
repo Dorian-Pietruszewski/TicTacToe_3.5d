@@ -37,10 +37,38 @@ class Plansza:
     def __repr__(self):
         s = map(lambda x: str(x).replace(" ", "\t"), [row for row in self.area])
         return "\n".join(s)
+    def check(self) -> str|None:
+        if self.area[0][0] and self.area[1][1] and self.area[2][2] and self.area[0][0][-1].team == self.area[1][1][-1].team == self.area[2][2][-1].team:
+            return self.area[1][1][-1].team
+        if self.area[0][2] and self.area[1][1] and self.area[2][0] and self.area[0][2][-1].team == self.area[1][1][-1].team == self.area[2][0][-1].team:
+            return self.area[1][1][-1].team
+        
+        for row in range(1,3):
+            for col in range(3):
+                if not self.area[row][0] or not self.area[row][col] or self.area[row][0][-1].team != self.area[row][col][-1].team:
+                    break
+            else:
+                return self.area[row][col][-1].team
+        
+        for col in range(1,3):
+            for row in range(3):
+                if not self.area[0][col] or not self.area[row][col] or self.area[0][col][-1].team != self.area[row][col][-1].team:
+                    break
+            else:
+                return self.area[row][col][-1].team
+        
 
-ASD = Plansza()
+        return None
 
-print(ASD.place(0,0,Pionek("B",2)))
-print(ASD.place(0,0,Pionek("R",3)))
-print(ASD.move(0,0,1,1))
-print(ASD)
+
+
+if __name__ == "__main__":
+    A = Plansza()
+
+    print(A.place(1,0,Pionek("B", 1)))
+    print(A.place(1,1,Pionek("B", 3)))
+    print(A.place(1,2,Pionek("B", 2)))
+
+    print(A)
+
+    print(A.check())
